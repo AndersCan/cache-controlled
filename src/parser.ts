@@ -64,7 +64,6 @@ export function parse(
   for ( const dir of trueDirectives ) {
     const i = clean.indexOf( dir );
     if ( i !== -1 ) {
-      dir;
       result[dir as BoolDirective] = true;
     }
   }
