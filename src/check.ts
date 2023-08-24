@@ -18,15 +18,13 @@ interface CacheStatus {
 export function check(
   parsed: CacheControlDirectives,
   /**
-   * Override the current `now` timestamp. 
+   * Override the current `now` timestamp.
    * @unit seconds
    */
   now_seconds = Date.now() / 1000,
 ) {
+  if ( parsed.immutable ) return status( true, true, true );
   const delta = now_seconds - parsed.timestamp;
-  if ( parsed.immutable ) {
-    return status( true, true, true );
-  }
   const ok = (parsed["max-age"] || -1) >= delta;
   const staleOk = (parsed["stale-while-revalidate"] || -1) >= delta;
   const errorOk = (parsed["stale-if-error"] || -1) >= delta;
