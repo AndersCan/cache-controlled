@@ -2,7 +2,6 @@
  * Directive documentation
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#cache_directives
  */
-
 export type CacheControlDirectives =
   & Partial<CacheControlNums>
   & Partial<CacheControlBools>
