@@ -4,7 +4,7 @@ Simplifies working with `Cache-Control` headers
 
 ## Parse
 
-Parse a `cache-control` header. Parsing is case insensitive and all spaces (``) are ignored.
+Parse a `cache-control` header. Parsing is case insensitive and all spaces are ignored.
 
 ```js
 import { parse } from "cache-controlled";
@@ -13,9 +13,13 @@ parse( "max-age=10" );
 // { "max-age": 10 }
 parse( "public, max-age=10, stale-while-revalidate=600" );
 // { "max-age": 10, public: true, "stale-while-revalidate": 600 }
+
+// For convenience, also handles `undefined` and `string[]`
+parse( undefined ); // {}
+parse( [ "public", "max-age=10" ] ); // { "max-age": 10, public: true }
 ```
 
-> Note: `parse` also adds a `timestamp` field for `check`.
+> Note: `parse` also adds a `timestamp` field used by `check`.
 
 ## Check
 
@@ -34,13 +38,26 @@ const status = check( parse( "stale-while-revalidate=10" ) ).okStale; // true
 const status = check( parse( "stale-if-error=10" ) ).okError; // true
 ```
 
-*Note: `check` only reads `immutable`, `max-age`, and `stale-` directives.*
+_Note: `check` only reads `immutable`, `max-age`, and `stale-` directives._
 
 ```js
 const status =
   check( parse( "immutable, must-revalidate, no-store, no-cache" ) ).ok; // true
 ```
 
+## stringify
+
+```js
+stringify( { public: true, ["max-age"]: 10, "stale-while-revalidate": 600 } );
+// public,max-age=10,stale-while-revalidate=600
+
+// Unknown keys won't be filtered out
+// @ts-expect-error Unknown key
+stringify( { unknown: 42 } ); // unknown=42
+```
+
 ## Other libraries
 
-Simpler than [http-cache-semantics](https://www.npmjs.com/package/http-cache-semantics), similar to [cache-control-parser](https://github.com/etienne-martin/cache-control-parser)
+If you need to handle all headers related to HTTP caching, check out [http-cache-semantics](https://www.npmjs.com/package/http-cache-semantics).
+
+This library is more compareable to [cache-control-parser](https://github.com/etienne-martin/cache-control-parser)

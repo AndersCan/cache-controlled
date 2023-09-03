@@ -52,7 +52,10 @@ const valueDirectivesRegExp = [
   /(stale-if-error)=(\d+)/,
 ];
 export function parse(
-  cacheControlHeader: string,
+  /**
+   * Handles the most common return types the parse the `cache-control` header
+   */
+  cacheControlHeader: string | string[] | undefined | null,
   /**
    * Override the timestamp for when this cache was created
    * @unit seconds
@@ -60,7 +63,13 @@ export function parse(
   timestamp = Date.now() / 1000,
 ): CacheControlDirectives {
   const result: CacheControlDirectives = { timestamp };
-  let clean = cacheControlHeader.replace( /\s/g, "" ).toLowerCase();
+
+  if ( !cacheControlHeader ) return result;
+  const asString = typeof cacheControlHeader === "string"
+    ? cacheControlHeader
+    : cacheControlHeader.join( "," );
+
+  let clean = asString.replace( /\s/g, "" ).toLowerCase();
   for ( const dir of trueDirectives ) {
     const i = clean.indexOf( dir );
     if ( i !== -1 ) {

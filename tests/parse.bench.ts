@@ -9,7 +9,7 @@ describe("parse", () => {
     );
   } );
 
-  bench( "us", () => {
+  bench( "cache-controlled", () => {
     parse(
       "max-age=1, s-maxage=2, stale-while-revalidate=3, stale-if-error=4, public, private, no-store, no-cache, must-revalidate, proxy-revalidate, immutable, no-transform",
     );
