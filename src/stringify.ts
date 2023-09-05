@@ -8,9 +8,9 @@ export function stringify(
   parsed: Omit<CacheControlDirectives, "timestamp">,
 ) {
   let result = "";
-  const xs = Object.keys( parsed );
-  for ( let i = 0; i < xs.length; i++ ) {
-    const directiveName = xs[i];
+  const keys = Object.keys( parsed );
+  for ( let i = 0; i < keys.length; i++ ) {
+    const directiveName = keys[i];
     if ( directiveName === "timestamp" ) continue;
     // @ts-expect-error `directiveName` could be any
     const value = parsed[directiveName];
