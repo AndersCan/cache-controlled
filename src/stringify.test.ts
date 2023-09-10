@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { parse, stringify } from "./index";
+import { parse as rawParse, stringify } from "./index";
+
+const parse = ( input: Parameters<typeof rawParse>[0] ) => {
+  const { timestamp, ...rest } = rawParse( input );
+  return rest;
+};
 
 describe("stringify", () => {
   test("can stringify empty", () => {
