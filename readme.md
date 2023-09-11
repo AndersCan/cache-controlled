@@ -45,10 +45,25 @@ const status =
   check( parse( "immutable, must-revalidate, no-store, no-cache" ) ).ok; // true
 ```
 
+## string
+
+Helper to write a typesafe cache control header
+
+```js
+string( "public, max-age=10, stale-while-revalidate=600" );
+// public, max-age=10, stale-while-revalidate=600
+
+// Unknown keys won't be filtered out
+// @ts-expect-error typo - should be `max-age`
+string( "maxage=1" ); // never
+// @ts-expect-error missing value
+string( "maxage" ); // never
+```
+
 ## stringify
 
 ```js
-stringify( { public: true, ["max-age"]: 10, "stale-while-revalidate": 600 } );
+stringify( { public: true, "max-age": 10, "stale-while-revalidate": 600 } );
 // public,max-age=10,stale-while-revalidate=600
 
 // Unknown keys won't be filtered out
